@@ -1,0 +1,7 @@
+{
+  "makefile.extensionOutputFolder": "./.vscode",
+  "files.associations": {
+    "*.cs": "csharp",
+    "functional": "cpp"
+  }
+}

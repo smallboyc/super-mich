@@ -1,0 +1,16 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/biri/Enseignement/IMAC1/CMSyntheseI/SupportSeance/Programmes/mod_wolf'
+echo "module obj/main.o"
+g++ -std=c++11 -std=gnu++11 -g -Wpointer-arith -Wall -I. -I./include -c src/main.cpp -o obj/main.o
+echo "------------------------"
+echo "module obj/rendering.o"
+g++ -std=c++11 -std=gnu++11 -g -Wpointer-arith -Wall -I. -I./include -c src/rendering.cpp -o obj/rendering.o
+echo "------------------------"
+echo "module obj/app_tools.o"
+g++ -std=c++11 -std=gnu++11 -g -Wpointer-arith -Wall -I. -I./include -c src/app_tools.cpp -o obj/app_tools.o
+echo "------------------------"
+echo "assemblage [obj/main.o obj/rendering.o obj/app_tools.o]->wolf"
+g++ obj/main.o obj/rendering.o obj/app_tools.o -lsfml-system -lsfml-graphics -lsfml-window -lGL -lGLU -lGLEW -o wolf
+echo "------------------------"
+make: Leaving directory '/home/biri/Enseignement/IMAC1/CMSyntheseI/SupportSeance/Programmes/mod_wolf'
+ 
