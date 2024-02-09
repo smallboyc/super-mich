@@ -29,6 +29,7 @@ extern float ratio;
 extern uint nb_ms_elapsed;
 extern uint nb_ms_save;
 extern uint idTexSkybox;
+extern double x;
 
 // Parametres de la camera
 extern double rayon;

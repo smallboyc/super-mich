@@ -13,6 +13,7 @@ unsigned int idTexSkybox = 0;
 double rayon = 300.0;
 double angle_phy = 15.0;
 double angle_theta = 45.0;
+double x = 0.f;
 
 // Parametres du monde et des transformations
 double xmin = -400.0, ymin = -400.0, xmax = +400.0, ymax = +400.0;
@@ -26,6 +27,7 @@ IndexedMesh *sphere = NULL;
 IndexedMesh *cyl = NULL;
 StandardMesh *cone = NULL;
 float up = 30.0f;
+float moveSpeed = 0.1f;
 
 /***************************************************************************/
 /*   FONCTIONS PRINCIPALES DE DESSIN                                       */
@@ -82,7 +84,6 @@ void drawGround()
 {
 	modelviewStack.pushMatrix();
 	setFlatColor(0.4, .0, .0);
-
 	modelviewStack.addRotation(-M_PI / 2, Vector3D(1.f, 0.f, 0.f));
 	modelviewStack.addTranslation(Vector3D(-400.f, 0.0f, -400.f));
 	updateMvMatrix(0);
@@ -96,6 +97,31 @@ void drawBasicWolf()
 	setFlatColor(.1, .1, .1);
 	modelviewStack.addTranslation(Vector3D(0.0f, 0.0f, 10.0f + up));
 	modelviewStack.addHomothety(Vector3D(2.0f, 1.0f, 1.0f));
+	updateMvMatrix(0);
+	a_basic_wolf->draw();
+	modelviewStack.popMatrix();
+}
+
+void flammes(int coeff)
+{
+	// La pic de ses morts
+	modelviewStack.pushMatrix();
+	setFlatColor(1, 0.4, .0);
+	modelviewStack.addTranslation(Vector3D(38.0f, 0.f, 16.0f + up));
+	modelviewStack.addRotation(-MY_PI / 2 - coeff * (MY_PI) / 5, Vector3D(0.f, 0.f, 1.f));
+	modelviewStack.addHomothety(Vector3D(0.50f, 0.70f, 0.40f));
+	updateMvMatrix(0);
+	cone->draw();
+	modelviewStack.popMatrix();
+}
+
+void pascontent(int coeff1, int coeff2)
+{
+	modelviewStack.pushMatrix();
+	setFlatColor(0, 0, 0);
+	modelviewStack.addTranslation(Vector3D(30.0f, coeff1, 23.0f + up));
+	modelviewStack.addRotation(coeff2 * MY_PI / 6, Vector3D(1.f, 0.f, 0.f));
+	modelviewStack.addHomothety(Vector3D(0.1f, 0.3f, 0.05f));
 	updateMvMatrix(0);
 	a_basic_wolf->draw();
 	modelviewStack.popMatrix();
@@ -165,10 +191,10 @@ void Pic2cMorts(float position_x)
 {
 	// La pic de ses morts
 	modelviewStack.pushMatrix();
-	setFlatColor(0.2, 0.2, 0.2);
+	setFlatColor(1, 0, 0);
 	modelviewStack.addTranslation(Vector3D(position_x, 0.0f, 50.f));
-	modelviewStack.addRotation(M_PI / 2, Vector3D(1.f, 0.f, 0.f));
-	modelviewStack.addHomothety(Vector3D(0.4f, 0.4f, 0.4f));
+	modelviewStack.addRotation(MY_PI / 2, Vector3D(1.f, 0.f, 0.f));
+	modelviewStack.addHomothety(Vector3D(0.25f, 0.25f, 0.25f));
 	updateMvMatrix(0);
 	cone->draw();
 	modelviewStack.popMatrix();
@@ -198,6 +224,17 @@ void PupilleGlobuleuse(float position_y)
 	modelviewStack.popMatrix();
 }
 
+void laBouche()
+{
+	modelviewStack.pushMatrix();
+	setFlatColor(1, 0, 0);
+	modelviewStack.addTranslation(Vector3D(30.0f, 0.0f, 17.0f + up));
+	modelviewStack.addHomothety(Vector3D(0.10f, 0.25f, 0.40f));
+	updateMvMatrix(0);
+	sphere->draw();
+	modelviewStack.popMatrix();
+}
+
 void aile2LaMortQuiTue(int coeff, int coeff2)
 {
 	modelviewStack.pushMatrix();
@@ -212,6 +249,10 @@ void aile2LaMortQuiTue(int coeff, int coeff2)
 
 void drawGoodWolf()
 {
+	modelviewStack.pushMatrix();
+	modelviewStack.addRotation(moveSpeed, Vector3D(0.f, 0.f, 1.f));
+	modelviewStack.addTranslation(Vector3D(x, 0.f, 0.f));
+
 	// Michel
 	drawBasicWolf();
 	drawHeadWolf();
@@ -235,7 +276,9 @@ void drawGoodWolf()
 	drawOreilles(5);
 
 	Pic2cMorts(-15.f);
+	Pic2cMorts(-10.f);
 	Pic2cMorts(-5.f);
+	Pic2cMorts(0.f);
 	Pic2cMorts(5.f);
 
 	yeuxGlobuleux(6.0f);
@@ -245,8 +288,15 @@ void drawGoodWolf()
 
 	aile2LaMortQuiTue(1, 4);
 	aile2LaMortQuiTue(3, 4);
-	// aile2LaMortQuiTue(1, -4);
-	// aile2LaMortQuiTue(3, -4);
+
+	flammes(0);
+	flammes(-1);
+	flammes(1);
+	pascontent(-5, -1);
+	pascontent(5, 1);
+	laBouche();
+	modelviewStack.popMatrix();
+	moveSpeed += 0.02;
 }
 
 void drawAnimal()

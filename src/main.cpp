@@ -24,12 +24,14 @@ void keyPressZoomOut()
 
 void keyPressPanLeft()
 {
-	angle_theta -= 6.0;
+	// angle_theta -= 6.0;
+	x += 10;
 }
 
 void keyPressPanRight()
 {
-	angle_theta += 6.0;
+	// angle_theta += 6.0;
+	x -= 10;
 }
 
 void keyPressPanUp()
